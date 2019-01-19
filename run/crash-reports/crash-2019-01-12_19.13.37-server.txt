@@ -1,0 +1,95 @@
+---- Minecraft Crash Report ----
+// Quite honestly, I wouldn't worry myself about that.
+
+Time: 1/12/19 7:13 PM
+Description: Ticking entity
+
+java.lang.NullPointerException: Ticking entity
+	at xt9.fluidtransformtweaker.common.entity.EntityCraftFluidItem.onUpdate(EntityCraftFluidItem.java:40)
+	at net.minecraft.world.World.updateEntityWithOptionalForce(World.java:2171)
+	at net.minecraft.world.WorldServer.updateEntityWithOptionalForce(WorldServer.java:871)
+	at net.minecraft.world.World.updateEntity(World.java:2130)
+	at net.minecraft.world.World.updateEntities(World.java:1931)
+	at net.minecraft.world.WorldServer.updateEntities(WorldServer.java:643)
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:842)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:743)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:192)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:592)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Server thread
+Stacktrace:
+	at xt9.fluidtransformtweaker.common.entity.EntityCraftFluidItem.onUpdate(EntityCraftFluidItem.java:40)
+	at net.minecraft.world.World.updateEntityWithOptionalForce(World.java:2171)
+	at net.minecraft.world.WorldServer.updateEntityWithOptionalForce(WorldServer.java:871)
+	at net.minecraft.world.World.updateEntity(World.java:2130)
+
+-- Entity being ticked --
+Details:
+	Entity Type: fluidtransformation:crafting_fluid_item (xt9.fluidtransformtweaker.common.entity.EntityCraftFluidItem)
+	Entity ID: 69
+	Entity Name: item.item.stick
+	Entity's Exact location: -76.58, 63.00, 117.88
+	Entity's Block location: World: (-77,63,117), Chunk: (at 3,3,5 in -5,7; contains blocks -80,0,112 to -65,255,127), Region: (-1,0; contains chunks -32,0 to -1,31, blocks -512,0,0 to -1,255,511)
+	Entity's Momentum: -0.00, 0.00, 0.01
+	Entity's Passengers: []
+	Entity's Vehicle: ~~ERROR~~ NullPointerException: null
+Stacktrace:
+	at net.minecraft.world.World.updateEntities(World.java:1931)
+	at net.minecraft.world.WorldServer.updateEntities(WorldServer.java:643)
+
+-- Affected level --
+Details:
+	Level name: #1
+	All players: 0 total; []
+	Chunk stats: ServerChunkCache: 625 Drop: 0
+	Level seed: 7740385818399837607
+	Level generator: ID 00 - default, ver 1. Features enabled: true
+	Level generator options: 
+	Level spawn location: World: (-68,64,120), Chunk: (at 12,4,8 in -5,7; contains blocks -80,0,112 to -65,255,127), Region: (-1,0; contains chunks -32,0 to -1,31, blocks -512,0,0 to -1,255,511)
+	Level time: 218310 game time, 6091 day time
+	Level dimension: 0
+	Level storage version: 0x04ABD - Anvil
+	Level weather: Rain time: 69244 (now: false), thunder time: 26247 (now: false)
+	Level game mode: Game mode: survival (ID 0). Hardcore: false. Cheats: true
+Stacktrace:
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:842)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:743)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:192)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:592)
+	at java.lang.Thread.run(Thread.java:748)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_171, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 925403064 bytes (882 MB) / 1523580928 bytes (1453 MB) up to 7622623232 bytes (7269 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 12, tallocated: 94
+	FML: MCP 9.42 Powered by Forge 14.23.5.2768 8 mods loaded, 8 mods active
+	States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+
+	| State     | ID                  | Version      | Source                                        | Signature |
+	|:--------- |:------------------- |:------------ |:--------------------------------------------- |:--------- |
+	| UCHIJAAAA | minecraft           | 1.12.2       | minecraft.jar                                 | None      |
+	| UCHIJAAAA | mcp                 | 9.42         | minecraft.jar                                 | None      |
+	| UCHIJAAAA | FML                 | 8.0.99.99    | forgeSrc-1.12.2-14.23.5.2768.jar              | None      |
+	| UCHIJAAAA | forge               | 14.23.5.2768 | forgeSrc-1.12.2-14.23.5.2768.jar              | None      |
+	| UCHIJAAAA | fluidtransformation | @VERSION@    | fluid-transformation_main                     | None      |
+	| UCHIJAAAA | crafttweaker        | 4.1.13       | CraftTweaker2-MC1120-Main-1.12-4.1.13.514.jar | None      |
+	| UCHIJAAAA | ctgui               | 1.0.0        | CraftTweaker2-MC1120-Main-1.12-4.1.13.514.jar | None      |
+	| UCHIJAAAA | jei                 | 4.8.5.135    | jei_1.12.2-4.8.5.135.jar                      | None      |
+
+	Loaded coremods (and transformers): 
+	GL info: ~~ERROR~~ RuntimeException: No OpenGL context found in the current thread.
+	Profiler Position: N/A (disabled)
+	Player Count: 0 / 8; []
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'fml,forge'

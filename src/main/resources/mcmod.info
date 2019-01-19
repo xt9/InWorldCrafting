@@ -1,0 +1,16 @@
+[
+{
+  "modid": "fluidtransformtweaker",
+  "name": "FluidTransformTweaker",
+  "description": "Crafttweaker integration that lets you add Fluid in-world trasformations.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["xt9 (IterationFunk)"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

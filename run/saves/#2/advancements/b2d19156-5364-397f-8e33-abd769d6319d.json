@@ -1,0 +1,21 @@
+{
+  "minecraft:story/lava_bucket": {
+    "criteria": {
+      "lava_bucket": "2019-01-13 21:07:29 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/brewing/cauldron": {
+    "criteria": {
+      "has_water_bucket": "2019-01-13 21:07:29 +0100"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "beaches": "2019-01-13 21:07:29 +0100",
+      "plains": "2019-01-13 21:08:51 +0100"
+    },
+    "done": false
+  }
+}
