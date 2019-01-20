@@ -1,8 +1,8 @@
 [
 {
-  "modid": "fluidtransformtweaker",
-  "name": "FluidTransformTweaker",
-  "description": "Crafttweaker integration that lets you add Fluid in-world trasformations.",
+  "modid": "inworldcrafting",
+  "name": "InWorldCrafting",
+  "description": "Crafttweaker integration that lets you craft in the world with Fluids, Fire or Explosions.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",

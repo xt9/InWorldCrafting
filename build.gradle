@@ -13,12 +13,12 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 def mcVersion = "1.12.2"
 def modMajor = "0"
-def modMinor = "9"
+def modMinor = "10"
 def modPatch = "0"
 
 version = "${mcVersion}-${modMajor}.${modMinor}.${modPatch}"
-group = "src.fluidtransformtweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "fluidtransformtweaker"
+group = "src.inworldcrafting" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "inworldcrafting"
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
@@ -37,7 +37,7 @@ minecraft {
     mappings = "snapshot_20171003"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
-    replaceIn "FluidTransformation.java"
+    replaceIn "InWorldCrafting.java"
     replace "@VERSION@", project.version.toString()
 }
 
