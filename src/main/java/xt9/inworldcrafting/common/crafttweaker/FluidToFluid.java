@@ -8,8 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+import xt9.inworldcrafting.ModConfig;
 import xt9.inworldcrafting.common.event.EntityReplacer;
 import xt9.inworldcrafting.common.recipe.FluidToFluidRecipe;
+import xt9.inworldcrafting.common.util.ModClashInfo;
 
 /**
  * Created by xt9 on 2019-01-12.
@@ -42,9 +44,18 @@ public class FluidToFluid {
 
         String outputFluidName = getFluidName(outputFluid);
         String inputFluidName = getFluidName(inputFluid);
-        EntityReplacer.allValidInputs.addAll(inputs);
-        FluidToFluidRecipe.addRecipe(outputFluidName, inputFluidName, inputs, ingredient.getAmount(), consume);
+
+        ModClashInfo info = new ModClashInfo();
+        if(!ModConfig.blacklistDisabled) {
+            info.checkForClashes(inputs);
+        }
+
+        if(!info.isModClashed()) {
+            EntityReplacer.allValidInputs.addAll(inputs);
+            FluidToFluidRecipe.addRecipe(outputFluidName, inputFluidName, inputs, ingredient.getAmount(), consume);
+        }
     }
+
 
     private static String getFluidName(ILiquidStack stack) {
         return stack.getDefinition().getName();

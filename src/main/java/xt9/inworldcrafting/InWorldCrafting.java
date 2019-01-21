@@ -9,7 +9,7 @@ import xt9.inworldcrafting.common.CommonProxy;
 /**
  * Created by xt9 on 2019-01-12.
  */
-@Mod(modid = InWorldCrafting.MODID, version = InWorldCrafting.VERSION, useMetadata = true)
+@Mod(modid = InWorldCrafting.MODID, version = InWorldCrafting.VERSION, useMetadata = true, dependencies = "required-after:crafttweaker")
 @Mod.EventBusSubscriber
 public class InWorldCrafting {
     public static final String MODID = "inworldcrafting";

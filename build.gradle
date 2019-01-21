@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 def mcVersion = "1.12.2"
 def modMajor = "0"
-def modMinor = "10"
+def modMinor = "11"
 def modPatch = "0"
 
 version = "${mcVersion}-${modMajor}.${modMinor}.${modPatch}"
@@ -26,7 +26,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2768"
+    version = "1.12.2-14.23.5.2781"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -69,6 +69,8 @@ dependencies {
     compile "redstone-flux:RedstoneFlux-1.12:2.1.0.6:universal"
     compile "cofhcore:CoFHCore-1.12.2:4.6.1.22:universal"
     compile "cofh-world:CoFHWorld-1.12.2:1.3.0.6:universal"
+    compile "thermal-foundation:ThermalFoundation-1.12.2:2.6.1.22:universal"
+
     compile "thermal-foundation:ThermalFoundation-1.12.2:2.6.1.22:universal"
 }
 

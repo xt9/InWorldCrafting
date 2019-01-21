@@ -7,8 +7,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+import xt9.inworldcrafting.ModConfig;
 import xt9.inworldcrafting.common.event.EntityReplacer;
 import xt9.inworldcrafting.common.recipe.BurnItemRecipe;
+import xt9.inworldcrafting.common.util.ModClashInfo;
 
 /**
  * Created by xt9 on 2019-01-19.
@@ -33,7 +35,14 @@ public class FireCrafting {
             inputs.add(stack);
         });
 
-        EntityReplacer.allValidInputs.addAll(inputs);
-        BurnItemRecipe.addRecipe(CraftTweakerMC.getItemStack(output), inputs, ingredient.getAmount(), ticks);
+        ModClashInfo info = new ModClashInfo();
+        if(!ModConfig.blacklistDisabled) {
+            info.checkForClashes(inputs);
+        }
+
+        if(!info.isModClashed()) {
+            EntityReplacer.allValidInputs.addAll(inputs);
+            BurnItemRecipe.addRecipe(CraftTweakerMC.getItemStack(output), inputs, ingredient.getAmount(), ticks);
+        }
     }
 }

@@ -14,7 +14,7 @@ import xt9.inworldcrafting.common.entity.EntityCrafterItem;
  * Created by xt9 on 2019-01-12.
  */
 public class CommonProxy {
-
+    
     public void preInit() {
         CraftTweakerAPI.registerClass(FluidToFluid.class);
         CraftTweakerAPI.registerClass(FluidToItem.class);
