@@ -1,5 +1,8 @@
 # 1.12.2
 
+## 0.12
+- Fixed a crash for OpenJDK users.
+
 ## 0.11
 - Added Input blacklist for items from other mods that require their own EntityItem logic.
 - Added config option to disable said blacklist.
