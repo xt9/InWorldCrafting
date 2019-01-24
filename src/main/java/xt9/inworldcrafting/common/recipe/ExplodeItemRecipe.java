@@ -1,5 +1,6 @@
 package xt9.inworldcrafting.common.recipe;
 
+import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -12,22 +13,22 @@ public class ExplodeItemRecipe {
     public static ArrayList<ExplodeItemRecipe> recipes = new ArrayList<>();
 
     private ItemStack outputStack;
-    private NonNullList<ItemStack> inputs;
+    private IIngredient inputs;
     private int inputAmount;
     private int surviveChance;
 
-    private ExplodeItemRecipe(ItemStack stack, NonNullList<ItemStack> inputs, int inputAmount, int surviveChance) {
+    private ExplodeItemRecipe(ItemStack stack, IIngredient inputs, int inputAmount, int surviveChance) {
         this.outputStack = stack;
         this.inputs = inputs;
         this.surviveChance = surviveChance;
         this.inputAmount = inputAmount;
     }
 
-    public static void addRecipe(ItemStack stack, NonNullList<ItemStack> inputs, int inputAmount, int surviveChance) {
+    public static void addRecipe(ItemStack stack, IIngredient inputs, int inputAmount, int surviveChance) {
         recipes.add(new ExplodeItemRecipe(stack, inputs, inputAmount, surviveChance));
     }
 
-    public NonNullList<ItemStack> getInputs() {
+    public IIngredient getInputs() {
         return inputs;
     }
 

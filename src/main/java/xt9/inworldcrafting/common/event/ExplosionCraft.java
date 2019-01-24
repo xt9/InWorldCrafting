@@ -1,5 +1,6 @@
 package xt9.inworldcrafting.common.event;
 
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -20,6 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by xt9 on 2019-01-19.
  */
+@SuppressWarnings("unused")
 @Mod.EventBusSubscriber
 public class ExplosionCraft {
 
@@ -29,22 +31,22 @@ public class ExplosionCraft {
             List<Entity> affectedEntities = event.getAffectedEntities();
             List<BlockPos> affectedBlocks = event.getAffectedBlocks();
 
-            ExplodeItemRecipe.recipes.forEach(r -> r.getInputs().forEach(stack -> {
-                affectedEntities.forEach(entity -> {
-                    if (entity instanceof EntityItem) {
-                        ItemStack spawnedStack =  ((EntityItem) entity).getItem();
-                        if(ItemStackHelper.areItemsEqualWithWildcard(stack, spawnedStack)) {
-                            handleExplodeItemCraft(event, r, (EntityItem) entity);
-                        }
+            ExplodeItemRecipe.recipes.forEach(r -> affectedEntities.forEach(entity -> {
+                if (entity instanceof EntityItem) {
+                    ItemStack spawnedStack = ((EntityItem) entity).getItem();
+                    if (r.getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
+                        handleExplodeItemCraft(event, r, (EntityItem) entity);
                     }
-                });
+                }
             }));
 
             ExplodeBlockRecipe.recipes.forEach(r -> affectedBlocks.forEach(blockPos -> {
                 IBlockState currentState = event.getWorld().getBlockState(blockPos);
-                if (currentState.getBlock() == Blocks.AIR) { return; }
+                if (currentState.getBlock() == Blocks.AIR) {
+                    return;
+                }
 
-                if(Objects.equals(currentState.getBlock().getRegistryName(), r.getInputBlock().getRegistryName()) && currentState.getBlock().getMetaFromState(currentState) == r.getInputStack().getItemDamage()) {
+                if (Objects.equals(currentState.getBlock().getRegistryName(), r.getInputBlock().getRegistryName()) && currentState.getBlock().getMetaFromState(currentState) == r.getInputStack().getItemDamage()) {
                     handleExplodeBlockCraft(event, r, blockPos);
                 }
             }));

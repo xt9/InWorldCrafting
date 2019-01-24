@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import xt9.inworldcrafting.common.recipe.ExplodeItemRecipe;
+import xt9.inworldcrafting.common.util.IngredientHelper;
 
 /**
  * Created by xt9 on 2019-01-20.
@@ -19,7 +20,7 @@ public class ExplodeItemRecipeWrapper implements IRecipeWrapper {
 
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ingredients.setInput(ItemStack.class, recipe.getInputs());
+        ingredients.setInput(ItemStack.class, IngredientHelper.getStacksFromIngredient(recipe.getInputs()));
         ingredients.setOutput(ItemStack.class, recipe.getOutputStack());
     }
 

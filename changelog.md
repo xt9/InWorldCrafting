@@ -1,5 +1,8 @@
 # 1.12.2
 
+## 0.13
+- Added NBT matching for ingredients
+
 ## 0.12
 - Fixed a crash for OpenJDK users.
 

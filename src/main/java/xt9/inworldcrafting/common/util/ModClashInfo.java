@@ -4,7 +4,6 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
-import javafx.util.Pair;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.Loader;
@@ -40,27 +39,24 @@ public class ModClashInfo {
         this.modClashed = modClashed;
     }
 
-    public void checkForClashes(NonNullList<ItemStack> inputs) {
-        for (ItemStack input : inputs) {
-            for (AbstractMap.SimpleEntry<String, Object> entry : blacklist) {
+    public void checkForClashes(IIngredient ingredient) {
+        for (AbstractMap.SimpleEntry<String, Object> entry : blacklist) {
+            if (Loader.isModLoaded(entry.getKey())) {
+                /* Make oredicts out of strings, otherwise get the Object as is*/
+                IIngredient blIngredients = CraftTweakerMC.getIIngredient(entry.getValue() instanceof String ? new OreIngredient((String) entry.getValue()) : entry.getValue());
 
-                if (Loader.isModLoaded(entry.getKey())) {
-                    /* Make oredicts out of strings, otherwise get the Object as is*/
-                    IIngredient blIngredients = CraftTweakerMC.getIIngredient(entry.getValue() instanceof String ? new OreIngredient((String) entry.getValue()) : entry.getValue());
+                if(blIngredients != null) {
+                    for (IItemStack blacklistedIItemStack : blIngredients.getItems()) {
+                        ItemStack blacklistedStack = CraftTweakerMC.getItemStack(blacklistedIItemStack);
 
-                    if(blIngredients != null) {
-                        for (IItemStack blacklistedIItemStack : blIngredients.getItems()) {
-                            ItemStack blacklistedStack = CraftTweakerMC.getItemStack(blacklistedIItemStack);
-
-                            if (ItemStackHelper.areItemsEqualWithWildcard(input, blacklistedStack)) {
-                                setModClashed(true);
-                                if(entry.getValue() instanceof String) {
-                                    CraftTweakerAPI.logError("[" + InWorldCrafting.MODID+ "]: Could not add recipe with " + entry.getValue() + " as an input, " + entry.getKey() + " already uses that OreDict for In-world crafting.");
-                                } else {
-                                    CraftTweakerAPI.logError("[" + InWorldCrafting.MODID+ "]: Could not add recipe with " + blacklistedStack.getItem().getRegistryName() + " as an input, " + entry.getKey() + " already uses " + blacklistedStack.getDisplayName() + " for In-world crafting.");
-                                }
-                                return;
+                        if (ingredient.matches(CraftTweakerMC.getIItemStack(blacklistedStack))) {
+                            setModClashed(true);
+                            if(entry.getValue() instanceof String) {
+                                CraftTweakerAPI.logError("[" + InWorldCrafting.MODID+ "]: Could not add recipe with " + entry.getValue() + " as an input, " + entry.getKey() + " already uses that OreDict for In-world crafting.");
+                            } else {
+                                CraftTweakerAPI.logError("[" + InWorldCrafting.MODID+ "]: Could not add recipe with " + blacklistedStack.getItem().getRegistryName() + " as an input, " + entry.getKey() + " already uses " + blacklistedStack.getDisplayName() + " for In-world crafting.");
                             }
+                            return;
                         }
                     }
                 }

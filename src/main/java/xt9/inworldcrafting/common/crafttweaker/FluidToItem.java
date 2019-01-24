@@ -34,24 +34,17 @@ public class FluidToItem {
         /* Inputs should only be items or oredicts */
         if(ingredient.getLiquids().size() > 0) { return; }
 
-        NonNullList<ItemStack> inputs = NonNullList.create();
-        ingredient.getItems().forEach(iiStack -> {
-            ItemStack stack = CraftTweakerMC.getItemStack(iiStack);
-            stack.setCount(ingredient.getAmount());
-            inputs.add(stack);
-        });
-
         ItemStack outputItemStack = CraftTweakerMC.getItemStack(outputItem);
         String inputFluidName = getFluidName(inputFluid);
 
         ModClashInfo info = new ModClashInfo();
         if(!ModConfig.blacklistDisabled) {
-            info.checkForClashes(inputs);
+            info.checkForClashes(ingredient);
         }
 
         if(!info.isModClashed()) {
-            EntityReplacer.allValidInputs.addAll(inputs);
-            FluidToItemRecipe.addRecipe(outputItemStack, inputFluidName, inputs, ingredient.getAmount(), consume);
+            EntityReplacer.allValidInputs.add(ingredient);
+            FluidToItemRecipe.addRecipe(outputItemStack, inputFluidName, ingredient, ingredient.getAmount(), consume);
         }
     }
 

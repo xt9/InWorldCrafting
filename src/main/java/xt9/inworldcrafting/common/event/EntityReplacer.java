@@ -1,5 +1,7 @@
 package xt9.inworldcrafting.common.event;
 
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -18,7 +20,7 @@ import xt9.inworldcrafting.common.util.ItemStackHelper;
 @Mod.EventBusSubscriber
 public class EntityReplacer {
     // TODO, REMOVE DUPLICATES in validInputs
-    public static NonNullList<ItemStack> allValidInputs = NonNullList.create();
+    public static NonNullList<IIngredient> allValidInputs = NonNullList.create();
 
     @SubscribeEvent
     public static void itemSpawnInWorld(EntityJoinWorldEvent event) {
@@ -36,8 +38,8 @@ public class EntityReplacer {
             ItemStack spawnedStack = ((EntityItem) event.getEntity()).getItem();
 
             boolean match = false;
-            for (ItemStack stack : allValidInputs) {
-                if(ItemStackHelper.areItemsEqualWithWildcard(stack, spawnedStack)) {
+            for (IIngredient input : allValidInputs) {
+                if(input.matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
                     match = true;
                 }
             }
@@ -59,31 +61,25 @@ public class EntityReplacer {
 
     private static void matchFluidToFluidRecipes(ItemStack spawnedStack, EntityCrafterItem e) {
         for (FluidToFluidRecipe r : FluidToFluidRecipe.recipes) {
-            r.getInputs().forEach(stack -> {
-                if(ItemStackHelper.areItemsEqualWithWildcard(stack, spawnedStack)) {
-                    e.addFluidToFluidRecipe(r);
-                }
-            });
+            if(r.getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
+                e.addFluidToFluidRecipe(r);
+            }
         }
     }
 
     private static void matchFluidToItemRecipes(ItemStack spawnedStack, EntityCrafterItem e) {
         for (FluidToItemRecipe r : FluidToItemRecipe.recipes) {
-            r.getInputs().forEach(stack -> {
-                if(ItemStackHelper.areItemsEqualWithWildcard(stack, spawnedStack)) {
-                    e.addFluidToItemRecipe(r);
-                }
-            });
+            if(r.getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
+                e.addFluidToItemRecipe(r);
+            }
         }
     }
 
     private static void matchBurnItemRecipes(ItemStack spawnedStack, EntityCrafterItem e) {
         for (BurnItemRecipe r : BurnItemRecipe.recipes) {
-            r.getInputs().forEach(stack -> {
-                if(ItemStackHelper.areItemsEqualWithWildcard(stack, spawnedStack)) {
-                    e.setBurnItemRecipe(r);
-                }
-            });
+            if(r.getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
+                e.setBurnItemRecipe(r);
+            }
         }
     }
 

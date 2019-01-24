@@ -1,5 +1,6 @@
 package xt9.inworldcrafting.common.recipe;
 
+import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -13,11 +14,11 @@ public class FluidToFluidRecipe {
 
     private String outputFluid;
     private String inputFluid;
-    private NonNullList<ItemStack> inputs;
+    private IIngredient inputs;
     private int inputAmount;
     private boolean consume;
 
-    private FluidToFluidRecipe(String outputFluid, String inputFluid, NonNullList<ItemStack> inputs, int inputAmount, boolean consume) {
+    private FluidToFluidRecipe(String outputFluid, String inputFluid, IIngredient inputs, int inputAmount, boolean consume) {
         this.outputFluid = outputFluid;
         this.inputFluid = inputFluid;
         this.inputs = inputs;
@@ -25,7 +26,7 @@ public class FluidToFluidRecipe {
         this.consume = consume;
     }
 
-    public static void addRecipe(String outputFluid, String inputFluid, NonNullList<ItemStack> inputs, int inputAmount, boolean consume) {
+    public static void addRecipe(String outputFluid, String inputFluid, IIngredient inputs, int inputAmount, boolean consume) {
         recipes.add(new FluidToFluidRecipe(outputFluid, inputFluid, inputs, inputAmount, consume));
     }
 
@@ -41,7 +42,7 @@ public class FluidToFluidRecipe {
         return consume;
     }
 
-    public NonNullList<ItemStack> getInputs() {
+    public IIngredient getInputs() {
         return inputs;
     }
 

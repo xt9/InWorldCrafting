@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import xt9.inworldcrafting.common.recipe.FluidToItemRecipe;
+import xt9.inworldcrafting.common.util.IngredientHelper;
 
 /**
  * Created by xt9 on 2019-01-13.
@@ -21,7 +22,7 @@ public class FluidToItemRecipeWrapper implements IRecipeWrapper {
 
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ingredients.setInput(ItemStack.class, recipe.getInputs());
+        ingredients.setInput(ItemStack.class, IngredientHelper.getStacksFromIngredient(recipe.getInputs()));
         ingredients.setInput(FluidStack.class, new FluidStack(FluidRegistry.getFluid(recipe.getInputFluid()), 1000));
         ingredients.setOutput(ItemStack.class, recipe.getOutputStack());
     }

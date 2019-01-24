@@ -27,14 +27,7 @@ public class ExplosionCrafting {
         /* Inputs should only be items or oredicts */
         if(ingredient.getLiquids().size() > 0) { return; }
 
-        NonNullList<ItemStack> inputs = NonNullList.create();
-        ingredient.getItems().forEach(iiStack -> {
-            ItemStack stack = CraftTweakerMC.getItemStack(iiStack);
-            stack.setCount(ingredient.getAmount());
-            inputs.add(stack);
-        });
-
-        ExplodeItemRecipe.addRecipe(CraftTweakerMC.getItemStack(output), inputs, ingredient.getAmount(), survivechance);
+        ExplodeItemRecipe.addRecipe(CraftTweakerMC.getItemStack(output), ingredient, ingredient.getAmount(), survivechance);
     }
 
     @ZenMethod
