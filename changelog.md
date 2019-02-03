@@ -4,6 +4,7 @@
 - Removed the item blacklist, changed approach to crafting so we don't cannibalized custom EntityItem classes. (Might be a bit more expensive on the cpu, so marking this version as a beta)
 - Fixed a bug where Fluid to Item recipes that consumes the fluid could craft in flowing fluid.
 - Inputs that are not consumed during crafting will now properly update it's shrunken state.
+- Removed config as the Blacklist is no longer a thing, the config file can be removed without breaking anything.
 
 ## 0.13
 - Added NBT matching for ingredients

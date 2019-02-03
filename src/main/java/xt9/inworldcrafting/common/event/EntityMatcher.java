@@ -10,7 +10,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import xt9.inworldcrafting.common.crafting.CraftingItem;
-import xt9.inworldcrafting.common.entity.EntityCrafterItem;
 import xt9.inworldcrafting.common.recipe.BurnItemRecipe;
 import xt9.inworldcrafting.common.recipe.FluidToFluidRecipe;
 import xt9.inworldcrafting.common.recipe.FluidToItemRecipe;
@@ -25,15 +24,9 @@ public class EntityMatcher {
 
     @SubscribeEvent
     public static void itemSpawnInWorld(EntityJoinWorldEvent event) {
-
         if(!(event.getEntity() instanceof EntityItem)) {
             return;
         }
-
-        if(event.getEntity() instanceof EntityCrafterItem) {
-            return;
-        }
-
 
         if(!event.getWorld().isRemote) {
             EntityItem entity = (EntityItem) event.getEntity();

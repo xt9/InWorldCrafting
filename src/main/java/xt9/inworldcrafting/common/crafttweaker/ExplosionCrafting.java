@@ -3,8 +3,6 @@ package xt9.inworldcrafting.common.crafttweaker;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import xt9.inworldcrafting.common.recipe.ExplodeBlockRecipe;
