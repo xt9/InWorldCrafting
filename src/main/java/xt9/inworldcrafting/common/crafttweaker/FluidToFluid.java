@@ -1,14 +1,16 @@
 package xt9.inworldcrafting.common.crafttweaker;
 
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import xt9.inworldcrafting.ModConfig;
-import xt9.inworldcrafting.common.event.EntityReplacer;
+import xt9.inworldcrafting.InWorldCrafting;
+import xt9.inworldcrafting.common.event.EntityMatcher;
 import xt9.inworldcrafting.common.recipe.FluidToFluidRecipe;
-import xt9.inworldcrafting.common.util.ModClashInfo;
 
 /**
  * Created by xt9 on 2019-01-12.
@@ -35,13 +37,15 @@ public class FluidToFluid {
         String outputFluidName = getFluidName(outputFluid);
         String inputFluidName = getFluidName(inputFluid);
 
-        ModClashInfo info = new ModClashInfo();
-        if(!ModConfig.blacklistDisabled) {
-            info.checkForClashes(ingredient);
+        boolean isValidOutBlock = true;
+        Fluid outFluid = FluidRegistry.getFluid(outputFluidName);
+        if(outFluid.getBlock() == null) {
+            isValidOutBlock = false;
+            CraftTweakerAPI.logError(InWorldCrafting.MODID + ": <liquid:" + outFluid.getName() + "> has no registered Block, it cannot be used as an Output for FluidToFluid crafting.");
         }
 
-        if(!info.isModClashed()) {
-            EntityReplacer.allValidInputs.add(ingredient);
+        if(isValidOutBlock) {
+            EntityMatcher.allValidInputs.add(ingredient);
             FluidToFluidRecipe.addRecipe(outputFluidName, inputFluidName, ingredient, ingredient.getAmount(), consume);
         }
     }

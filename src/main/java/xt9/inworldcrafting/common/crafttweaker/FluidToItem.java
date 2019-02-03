@@ -5,13 +5,10 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import xt9.inworldcrafting.ModConfig;
-import xt9.inworldcrafting.common.event.EntityReplacer;
+import xt9.inworldcrafting.common.event.EntityMatcher;
 import xt9.inworldcrafting.common.recipe.FluidToItemRecipe;
-import xt9.inworldcrafting.common.util.ModClashInfo;
 
 /**
  * Created by xt9 on 2019-01-12.
@@ -37,15 +34,9 @@ public class FluidToItem {
         ItemStack outputItemStack = CraftTweakerMC.getItemStack(outputItem);
         String inputFluidName = getFluidName(inputFluid);
 
-        ModClashInfo info = new ModClashInfo();
-        if(!ModConfig.blacklistDisabled) {
-            info.checkForClashes(ingredient);
-        }
 
-        if(!info.isModClashed()) {
-            EntityReplacer.allValidInputs.add(ingredient);
-            FluidToItemRecipe.addRecipe(outputItemStack, inputFluidName, ingredient, ingredient.getAmount(), consume);
-        }
+        EntityMatcher.allValidInputs.add(ingredient);
+        FluidToItemRecipe.addRecipe(outputItemStack, inputFluidName, ingredient, ingredient.getAmount(), consume);
     }
 
     private static String getFluidName(ILiquidStack stack) {

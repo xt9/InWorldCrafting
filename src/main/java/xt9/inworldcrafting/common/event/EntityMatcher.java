@@ -4,21 +4,22 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import xt9.inworldcrafting.common.crafting.CraftingItem;
 import xt9.inworldcrafting.common.entity.EntityCrafterItem;
 import xt9.inworldcrafting.common.recipe.BurnItemRecipe;
 import xt9.inworldcrafting.common.recipe.FluidToFluidRecipe;
 import xt9.inworldcrafting.common.recipe.FluidToItemRecipe;
-import xt9.inworldcrafting.common.util.ItemStackHelper;
 
 /**
  * Created by xt9 on 2019-01-12.
  */
 @Mod.EventBusSubscriber
-public class EntityReplacer {
+public class EntityMatcher {
     // TODO, REMOVE DUPLICATES in validInputs
     public static NonNullList<IIngredient> allValidInputs = NonNullList.create();
 
@@ -35,6 +36,7 @@ public class EntityReplacer {
 
 
         if(!event.getWorld().isRemote) {
+            EntityItem entity = (EntityItem) event.getEntity();
             ItemStack spawnedStack = ((EntityItem) event.getEntity()).getItem();
 
             boolean match = false;
@@ -46,50 +48,42 @@ public class EntityReplacer {
 
             if(!match) { return; }
 
-            EntityCrafterItem e = new EntityCrafterItem(event.getWorld(), event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, ((EntityItem) event.getEntity()).getItem());
+            CraftingItem craftingItem = new CraftingItem(new NBTTagCompound());
 
             /* Matches for recipes, if a match a found the method will add the recipe to the entity */
-            matchFluidToFluidRecipes(spawnedStack, e);
-            matchFluidToItemRecipes(spawnedStack, e);
-            matchBurnItemRecipes(spawnedStack, e);
+            matchFluidToFluidRecipes(spawnedStack, craftingItem);
+            matchFluidToItemRecipes(spawnedStack, craftingItem);
+            matchBurnItemRecipes(spawnedStack, craftingItem);
 
-            if(e.containsRecipes()) {
-                spawnTheDamnThing(event, e);
+            if(craftingItem.containsRecipes()) {
+                entity.setPickupDelay(20);
+                entity.setEntityInvulnerable(true);
+                entity.getEntityData().setTag(CraftingItem.getNbtKey(), craftingItem.serialize());
             }
         }
     }
 
-    private static void matchFluidToFluidRecipes(ItemStack spawnedStack, EntityCrafterItem e) {
-        for (FluidToFluidRecipe r : FluidToFluidRecipe.recipes) {
-            if(r.getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
-                e.addFluidToFluidRecipe(r);
+    private static void matchFluidToFluidRecipes(ItemStack spawnedStack, CraftingItem craftingItem) {
+        for (int i = 0; i < FluidToFluidRecipe.recipes.size(); i++) {
+            if(FluidToFluidRecipe.recipes.get(i).getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
+                craftingItem.addFluidToFluidRecipeIndex(i);
             }
         }
     }
 
-    private static void matchFluidToItemRecipes(ItemStack spawnedStack, EntityCrafterItem e) {
-        for (FluidToItemRecipe r : FluidToItemRecipe.recipes) {
-            if(r.getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
-                e.addFluidToItemRecipe(r);
+    private static void matchFluidToItemRecipes(ItemStack spawnedStack, CraftingItem craftingItem) {
+        for (int i = 0; i < FluidToItemRecipe.recipes.size(); i++) {
+            if(FluidToItemRecipe.recipes.get(i).getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
+                craftingItem.addFluidToItemRecipeIndex(i);
             }
         }
     }
 
-    private static void matchBurnItemRecipes(ItemStack spawnedStack, EntityCrafterItem e) {
-        for (BurnItemRecipe r : BurnItemRecipe.recipes) {
-            if(r.getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
-                e.setBurnItemRecipe(r);
+    private static void matchBurnItemRecipes(ItemStack spawnedStack, CraftingItem craftingItem) {
+        for (int i = 0; i < BurnItemRecipe.recipes.size(); i++) {
+            if(BurnItemRecipe.recipes.get(i).getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
+                craftingItem.setBurnItemRecipe(i);
             }
         }
-    }
-
-
-    private static void spawnTheDamnThing(EntityJoinWorldEvent event, EntityItem entity) {
-        entity.motionX = event.getEntity().motionX;
-        entity.motionY = event.getEntity().motionY;
-        entity.motionZ = event.getEntity().motionZ;
-        event.getEntity().setDead();
-        event.getWorld().spawnEntity(entity);
-        event.setCanceled(true);
     }
 }
