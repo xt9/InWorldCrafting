@@ -1,11 +1,14 @@
 package xt9.inworldcrafting.common.crafting;
 
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -13,9 +16,10 @@ import xt9.inworldcrafting.InWorldCrafting;
 import xt9.inworldcrafting.common.recipe.BurnItemRecipe;
 import xt9.inworldcrafting.common.recipe.FluidToFluidRecipe;
 import xt9.inworldcrafting.common.recipe.FluidToItemRecipe;
+import xt9.inworldcrafting.common.util.ItemStackHelper;
+import xt9.inworldcrafting.common.util.WorldHelper;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static net.minecraft.block.BlockLiquid.LEVEL;
 
@@ -27,6 +31,7 @@ public class CraftingItem {
     private List<Integer> fluidToItemRecipeIndexes = new ArrayList<>();
     private World world;
     private EntityItem item;
+    private List<EntityItem> nearbyItems = new ArrayList<>();
     private int burnItemRecipeIndex = -1;
     private int burnProgress = 0;
 
@@ -72,10 +77,12 @@ public class CraftingItem {
 
         if (containsRecipes()) {
             IBlockState state = world.getBlockState(item.getPosition());
+            nearbyItems.clear();
+            nearbyItems.addAll(WorldHelper.getAllItemEntitiesAtPosition(world, item.getPosition()));
 
-            if(!fluidToFluidRecipeIndexes.isEmpty()) {
+            if (!fluidToFluidRecipeIndexes.isEmpty()) {
                 fluidToFluidRecipeIndexes.forEach(i -> {
-                    if(i < FluidToFluidRecipe.recipes.size()) {
+                    if (i < FluidToFluidRecipe.recipes.size()) {
                         FluidToFluidRecipe r = FluidToFluidRecipe.recipes.get(i);
                         Fluid inputFluid = FluidRegistry.getFluid(r.getInputFluid());
                         updateFluidToFluid(state, inputFluid.getBlock(), r);
@@ -83,9 +90,9 @@ public class CraftingItem {
                 });
             }
 
-            if(!fluidToItemRecipeIndexes.isEmpty()) {
+            if (!fluidToItemRecipeIndexes.isEmpty()) {
                 fluidToItemRecipeIndexes.forEach(i -> {
-                    if(i < FluidToItemRecipe.recipes.size()) {
+                    if (i < FluidToItemRecipe.recipes.size()) {
                         FluidToItemRecipe r = FluidToItemRecipe.recipes.get(i);
                         Fluid inputFluid = FluidRegistry.getFluid(r.getInputFluid());
                         updateFluidToItem(state, inputFluid.getBlock(), r);
@@ -93,17 +100,17 @@ public class CraftingItem {
                 });
             }
 
-            if(burnItemRecipeIndex != -1) {
-                if(burnItemRecipeIndex < BurnItemRecipe.recipes.size()) {
+            if (burnItemRecipeIndex != -1) {
+                if (burnItemRecipeIndex < BurnItemRecipe.recipes.size()) {
                     BurnItemRecipe r = BurnItemRecipe.recipes.get(burnItemRecipeIndex);
                     /* Reset progress if it stops burning */
-                    if(!item.isBurning()) {
+                    if (!item.isBurning()) {
                         burnProgress = 0;
                     }
 
-                    if(item.isBurning()) {
+                    if (item.isBurning()) {
                         burnProgress++;
-                        if(this.burnProgress == r.getTicks()) {
+                        if (this.burnProgress == r.getTicks()) {
                             updateBurnItem(r);
                         }
                     }
@@ -114,14 +121,41 @@ public class CraftingItem {
 
     @SuppressWarnings("StatementWithEmptyBody")
     private void updateFluidToFluid(IBlockState state, Block block, FluidToFluidRecipe recipe) {
-        if(state.getBlock() == block) {
+        if (state.getBlock() == block) {
             // Fluid Sourceblocks has a level of 0
-            if (state.getValue(LEVEL) == 0 && item.getItem().getCount() >= recipe.getInputAmount()) {
-                Fluid outFluid = FluidRegistry.getFluid(recipe.getOutputFluid());
-                if(outFluid.getBlock() != null) {
-                    world.setBlockState(item.getPosition(), outFluid.getBlock().getDefaultState(), 3);
-                    if(recipe.willConsume()) {
-                        shrinkAndUpdateItem(recipe.getInputAmount());
+            if (state.getValue(LEVEL) == 0) {
+                NonNullList<IIngredient> required = NonNullList.create();
+                required.addAll(Arrays.asList(recipe.getInputs()));
+
+                Map<EntityItem, Integer> used = new HashMap<>();
+
+                // Iterate through the nearby item entities.
+                // Depending on if there are a ton of items lying around, this could get laggy as it's O(n^2)
+                for (EntityItem entityItem : nearbyItems) {
+                    Iterator<IIngredient> req = required.iterator();
+                    while (req.hasNext()) {
+                        IIngredient ingredient = req.next();
+                        if (ingredient.matches(CraftTweakerMC.getIItemStack(entityItem.getItem()))) {
+                            // If our entity doesn't have enough to fulfill the requirement
+                            if (entityItem.getItem().getCount() < ingredient.getAmount()) {
+                                used.put(entityItem, entityItem.getItem().getCount());
+                                required.add(ingredient.amount(ingredient.getAmount() - entityItem.getItem().getCount()));
+                            } else {
+                                used.put(entityItem, ingredient.getAmount());
+                            }
+                            req.remove();
+                            break;
+                        }
+                    }
+                }
+                // If we found all required ingredients
+                if (required.isEmpty()) {
+                    Fluid outFluid = FluidRegistry.getFluid(recipe.getOutputFluid());
+                    if (outFluid.getBlock() != null) {
+                        world.setBlockState(item.getPosition(), outFluid.getBlock().getDefaultState(), 3);
+                        if (recipe.willConsume()) {
+                            shrinkAndUpdateItems(used);
+                        }
                     }
                 }
             }
@@ -141,25 +175,50 @@ public class CraftingItem {
             output.motionZ = 0;
             output.setPickupDelay(10);
 
-            if (item.getItem().getCount() >= recipe.getInputAmount()) {
+            NonNullList<IIngredient> required = NonNullList.create();
+            required.addAll(Arrays.asList(recipe.getInputs()));
+
+            Map<EntityItem, Integer> used = new HashMap<>();
+
+            // Iterate through the nearby item entities.
+            // Depending on if there are a ton of items lying around, this could get laggy as it's O(n^2)
+            for (EntityItem entityItem : nearbyItems) {
+                Iterator<IIngredient> req = required.iterator();
+                while (req.hasNext()) {
+                    IIngredient ingredient = req.next();
+                    if (ingredient.amount(1).matches(CraftTweakerMC.getIItemStack(entityItem.getItem()))) {
+                        // If our entity doesn't have enough to fulfill the requirement
+                        if (entityItem.getItem().getCount() < ingredient.getAmount()) {
+                            used.put(entityItem, entityItem.getItem().getCount());
+                            required.add(ingredient.amount(ingredient.getAmount() - entityItem.getItem().getCount()));
+                        } else {
+                            used.put(entityItem, ingredient.getAmount());
+                        }
+                        req.remove();
+                        break;
+                    }
+                }
+            }
+
+            if (required.isEmpty()) {
                 if (recipe.willConsume()) {
                     // Fluid Sourceblocks has a level of 0
                     if (state.getValue(LEVEL) == 0) {
                         world.setBlockState(item.getPosition(), Blocks.AIR.getDefaultState(), 3);
 
                         world.spawnEntity(output);
-                        shrinkAndUpdateItem(recipe.getInputAmount());
+                        shrinkAndUpdateItems(used);
                     }
                 } else {
                     world.spawnEntity(output);
-                    shrinkAndUpdateItem(recipe.getInputAmount());
+                    shrinkAndUpdateItems(used);
                 }
             }
         }
     }
 
     private void updateBurnItem(BurnItemRecipe recipe) {
-        if(item.getItem().getCount() == 0) {
+        if (item.getItem().getCount() == 0) {
             item.setDead();
             return;
         }
@@ -170,8 +229,8 @@ public class CraftingItem {
         int stacks = 0;
         int remainder = 0;
 
-        while(items != 0) {
-            if(items >= 64) {
+        while (items != 0) {
+            if (items >= 64) {
                 stacks = stacks + 1;
                 items = items - 64;
             } else {
@@ -209,6 +268,14 @@ public class CraftingItem {
         ItemStack updatedItem = item.getItem().copy();
         updatedItem.shrink(inputAmount);
         item.setItem(updatedItem);
+    }
+
+    private void shrinkAndUpdateItems(Map<EntityItem, Integer> items) {
+        for (Map.Entry<EntityItem, Integer> entry : items.entrySet()) {
+            ItemStack updatedItem = entry.getKey().getItem().copy();
+            updatedItem.shrink(entry.getValue());
+            entry.getKey().setItem(updatedItem);
+        }
     }
 
     private List<Integer> getListFromArray(int[] arr) {

@@ -34,7 +34,7 @@ public class EntityMatcher {
 
             boolean match = false;
             for (IIngredient input : allValidInputs) {
-                if(input.matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
+                if(input.amount(1).matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
                     match = true;
                 }
             }
@@ -58,16 +58,24 @@ public class EntityMatcher {
 
     private static void matchFluidToFluidRecipes(ItemStack spawnedStack, CraftingItem craftingItem) {
         for (int i = 0; i < FluidToFluidRecipe.recipes.size(); i++) {
-            if(FluidToFluidRecipe.recipes.get(i).getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
-                craftingItem.addFluidToFluidRecipeIndex(i);
+            IIngredient[] ingredients = FluidToFluidRecipe.recipes.get(i).getInputs();
+            for (int j = 0; j < ingredients.length; j++) {
+                if(ingredients[j].amount(1).matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
+                    craftingItem.addFluidToFluidRecipeIndex(i);
+                    break;
+                }
             }
         }
     }
 
     private static void matchFluidToItemRecipes(ItemStack spawnedStack, CraftingItem craftingItem) {
         for (int i = 0; i < FluidToItemRecipe.recipes.size(); i++) {
-            if(FluidToItemRecipe.recipes.get(i).getInputs().matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
-                craftingItem.addFluidToItemRecipeIndex(i);
+            IIngredient[] ingredients = FluidToItemRecipe.recipes.get(i).getInputs();
+            for (int j = 0; j < ingredients.length; j++) {
+                if(ingredients[j].amount(1).matches(CraftTweakerMC.getIItemStack(spawnedStack))) {
+                    craftingItem.addFluidToItemRecipeIndex(i);
+                    break;
+                }
             }
         }
     }
