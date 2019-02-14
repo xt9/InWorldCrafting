@@ -50,7 +50,7 @@ public class FluidToItem {
         ItemStack outputItemStack = CraftTweakerMC.getItemStack(outputItem);
         String inputFluidName = getFluidName(inputFluid);
 
-        EntityMatcher.allValidInputs.addAll(Arrays.asList(ingredients));
+        EntityMatcher.allValidInputs.add(ingredients[0]);
         FluidToItemRecipe.addRecipe(outputItemStack, inputFluidName, ingredients, consume);
     }
 

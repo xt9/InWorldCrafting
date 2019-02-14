@@ -61,7 +61,7 @@ public class FluidToFluid {
         }
 
         if (isValidOutBlock) {
-            EntityMatcher.allValidInputs.addAll(Arrays.asList(ingredients));
+            EntityMatcher.allValidInputs.add(ingredients[0]);
             FluidToFluidRecipe.addRecipe(outputFluidName, inputFluidName, ingredients, consume);
         }
     }

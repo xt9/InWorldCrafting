@@ -79,6 +79,7 @@ public class CraftingItem {
             IBlockState state = world.getBlockState(item.getPosition());
             nearbyItems.clear();
             nearbyItems.addAll(WorldHelper.getAllItemEntitiesAtPosition(world, item.getPosition()));
+            nearbyItems.removeIf(entityItem -> world.getBlockState(entityItem.getPosition()) != state);
 
             if (!fluidToFluidRecipeIndexes.isEmpty()) {
                 fluidToFluidRecipeIndexes.forEach(i -> {
