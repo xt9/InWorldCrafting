@@ -2,7 +2,6 @@ package xt9.inworldcrafting.common.recipe;
 
 import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 
 import java.util.ArrayList;
 
@@ -14,20 +13,18 @@ public class FluidToItemRecipe {
 
     private ItemStack outputStack;
     private String inputFluid;
-    private IIngredient inputs;
-    private int inputAmount;
+    private IIngredient[] inputs;
     private boolean consume;
 
-    private FluidToItemRecipe(ItemStack outputStack, String inputFluid, IIngredient inputs, int inputAmount, boolean consume) {
+    private FluidToItemRecipe(ItemStack outputStack, String inputFluid, IIngredient[] inputs, boolean consume) {
         this.outputStack = outputStack;
         this.inputFluid = inputFluid;
         this.inputs = inputs;
         this.consume = consume;
-        this.inputAmount = inputAmount;
     }
 
-    public static void addRecipe(ItemStack outputItem, String inputFluid, IIngredient inputs, int inputAmount, boolean consume) {
-        recipes.add(new FluidToItemRecipe(outputItem, inputFluid, inputs, inputAmount, consume));
+    public static void addRecipe(ItemStack outputItem, String inputFluid, IIngredient[] inputs, boolean consume) {
+        recipes.add(new FluidToItemRecipe(outputItem, inputFluid, inputs, consume));
     }
 
     public ItemStack getOutputStack() {
@@ -42,11 +39,7 @@ public class FluidToItemRecipe {
         return consume;
     }
 
-    public int getInputAmount() {
-        return inputAmount;
-    }
-
-    public IIngredient getInputs() {
+    public IIngredient[] getInputs() {
         return inputs;
     }
 }
