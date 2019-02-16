@@ -1,5 +1,10 @@
 # 1.12.2
 
+## 1.1
+- FluidToFluid and FluidToItem recipes now take multiple inputs. (Thanks ExpensiveKoala)
+- Altered FluidToFluid and FluidToItem JEI categories to fit more inputs.
+- Added particles to give visual feedback to the player upon completed crafts.
+
 ## 1.0
 - Removed the item blacklist, changed approach to crafting so we don't cannibalized custom EntityItem classes. (Might be a bit more expensive on the cpu, so marking this version as a beta)
 - Fixed a bug where Fluid to Item recipes that consumes the fluid could craft in flowing fluid.

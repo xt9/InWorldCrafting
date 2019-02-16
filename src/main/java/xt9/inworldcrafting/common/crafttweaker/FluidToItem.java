@@ -10,8 +10,6 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import xt9.inworldcrafting.common.event.EntityMatcher;
 import xt9.inworldcrafting.common.recipe.FluidToItemRecipe;
 
-import java.util.Arrays;
-
 /**
  * Created by xt9 on 2019-01-12.
  */
@@ -47,11 +45,16 @@ public class FluidToItem {
             }
         }
 
+        int inputlength = ingredients.length > 4 ? 4 : ingredients.length;
+        IIngredient[] inputs = new IIngredient[inputlength];
+        System.arraycopy(ingredients, 0, inputs, 0, inputs.length);
+
         ItemStack outputItemStack = CraftTweakerMC.getItemStack(outputItem);
         String inputFluidName = getFluidName(inputFluid);
 
+        // Only the first ingredient on the list needs to be added because each craft only need one "Controller" item
         EntityMatcher.allValidInputs.add(ingredients[0]);
-        FluidToItemRecipe.addRecipe(outputItemStack, inputFluidName, ingredients, consume);
+        FluidToItemRecipe.addRecipe(outputItemStack, inputFluidName, inputs, consume);
     }
 
     private static String getFluidName(ILiquidStack stack) {

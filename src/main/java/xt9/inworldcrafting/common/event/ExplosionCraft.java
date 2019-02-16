@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import xt9.inworldcrafting.common.recipe.ExplodeBlockRecipe;
 import xt9.inworldcrafting.common.recipe.ExplodeItemRecipe;
-import xt9.inworldcrafting.common.util.ItemStackHelper;
+import xt9.inworldcrafting.common.util.ParticleMessageHelper;
 
 import java.util.List;
 import java.util.Objects;
@@ -65,6 +65,7 @@ public class ExplosionCraft {
             item.motionZ = 0;
             item.setPickupDelay(10);
 
+            ParticleMessageHelper.visualizeCrafting(event.getWorld(),"black", item.posX, item.posY, item.posZ, 80);
             event.getWorld().spawnEntity(item);
         }
     }
@@ -86,6 +87,7 @@ public class ExplosionCraft {
             item.setPickupDelay(10);
 
             if(recipe.getSurviveChance() >= rand.nextInt(1, 100)) {
+                ParticleMessageHelper.visualizeCrafting(event.getWorld(),"black", item.posX, item.posY, item.posZ, 80);
                 event.getWorld().spawnEntity(item);
                 entity.getItem().shrink(recipe.getInputAmount());
             }

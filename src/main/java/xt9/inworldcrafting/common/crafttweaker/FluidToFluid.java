@@ -12,8 +12,6 @@ import xt9.inworldcrafting.InWorldCrafting;
 import xt9.inworldcrafting.common.event.EntityMatcher;
 import xt9.inworldcrafting.common.recipe.FluidToFluidRecipe;
 
-import java.util.Arrays;
-
 /**
  * Created by xt9 on 2019-01-12.
  */
@@ -50,6 +48,10 @@ public class FluidToFluid {
             }
         }
 
+        int inputlength = ingredients.length > 4 ? 4 : ingredients.length;
+        IIngredient[] inputs = new IIngredient[inputlength];
+        System.arraycopy(ingredients, 0, inputs, 0, inputs.length);
+
         String outputFluidName = getFluidName(outputFluid);
         String inputFluidName = getFluidName(inputFluid);
 
@@ -61,8 +63,9 @@ public class FluidToFluid {
         }
 
         if (isValidOutBlock) {
+            // Only the first ingredient on the list needs to be added because each craft only need one "Controller" item
             EntityMatcher.allValidInputs.add(ingredients[0]);
-            FluidToFluidRecipe.addRecipe(outputFluidName, inputFluidName, ingredients, consume);
+            FluidToFluidRecipe.addRecipe(outputFluidName, inputFluidName, inputs, consume);
         }
     }
 

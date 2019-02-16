@@ -13,6 +13,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import xt9.inworldcrafting.InWorldCrafting;
 
+import java.util.List;
+
 /**
  * Created by xt9 on 2019-01-13.
  */
@@ -21,7 +23,7 @@ public class FluidToItemRecipeCategory implements IRecipeCategory {
 
     public FluidToItemRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation base = new ResourceLocation(InWorldCrafting.MODID, "textures/gui/jei.png");
-        background = guiHelper.createDrawable(base,0, 0, 116, 36, 0, 0, 0, 0);
+        background = guiHelper.createDrawable(base,0, 0, 177, 36, 0, 0, 0, 0);
     }
 
     @Override
@@ -29,14 +31,22 @@ public class FluidToItemRecipeCategory implements IRecipeCategory {
         IGuiItemStackGroup itemStacks = layout.getItemStacks();
         IGuiFluidStackGroup fluidStacks = layout.getFluidStacks();
 
-        itemStacks.init(0, true, 1, 1);
-        itemStacks.set(0, ingredients.getInputs(ItemStack.class).get(0));
+        List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
 
-        fluidStacks.init(1, true, 50, 2);
-        fluidStacks.set(1, ingredients.getInputs(FluidStack.class).get(0));
+        int slotindex = 0;
+        for (List<ItemStack> input : inputs) {
+            itemStacks.init(slotindex, true, 64 - (slotindex) * 21, 1);
+            itemStacks.set(slotindex, input);
+            slotindex++;
+        }
 
-        itemStacks.init(2, true, 97, 1);
-        itemStacks.set(2, ingredients.getOutputs(ItemStack.class).get(0));
+        slotindex++;
+        fluidStacks.init(slotindex, true, 112, 2);
+        fluidStacks.set(slotindex, ingredients.getInputs(FluidStack.class).get(0));
+
+        slotindex++;
+        itemStacks.init(slotindex, true, 159, 1);
+        itemStacks.set(slotindex, ingredients.getOutputs(ItemStack.class).get(0));
     }
 
     @Override

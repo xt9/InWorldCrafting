@@ -49,7 +49,7 @@ public class EntityMatcher {
             matchBurnItemRecipes(spawnedStack, craftingItem);
 
             if(craftingItem.containsRecipes()) {
-                entity.setPickupDelay(20);
+                entity.setPickupDelay(15);
                 entity.setEntityInvulnerable(true);
                 entity.getEntityData().setTag(CraftingItem.getNbtKey(), craftingItem.serialize());
             }
