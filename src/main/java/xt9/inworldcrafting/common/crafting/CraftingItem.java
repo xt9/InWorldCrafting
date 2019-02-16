@@ -156,7 +156,7 @@ public class CraftingItem {
                         world.setBlockState(item.getPosition(), outFluid.getBlock().getDefaultState(), 3);
                         if (recipe.willConsume()) {
                             shrinkAndUpdateItems(used);
-                            ParticleMessageHelper.visualizeCrafting(world,"white", item.posX, item.posY, item.posZ, 8);
+                            ParticleMessageHelper.visualizeCrafting(world, "white", item.posX, item.posY, item.posZ, 8);
                         }
                     }
                 }
@@ -210,12 +210,12 @@ public class CraftingItem {
 
                         world.spawnEntity(output);
                         shrinkAndUpdateItems(used);
-                        ParticleMessageHelper.visualizeCrafting(world,"white", item.posX, item.posY, item.posZ, 8);
+                        ParticleMessageHelper.visualizeCrafting(world, "white", item.posX, item.posY, item.posZ, 8);
                     }
                 } else {
                     world.spawnEntity(output);
                     shrinkAndUpdateItems(used);
-                    ParticleMessageHelper.visualizeCrafting(world,"white", item.posX, item.posY, item.posZ, 8);
+                    ParticleMessageHelper.visualizeCrafting(world, "white", item.posX, item.posY, item.posZ, 8);
                 }
             }
         }
@@ -265,7 +265,7 @@ public class CraftingItem {
 
         world.spawnEntity(newItem);
         shrinkAndUpdateItem(recipeNum * recipe.getInputAmount());
-        ParticleMessageHelper.visualizeCrafting(world,"black", item.posX, item.posY, item.posZ, 80);
+        ParticleMessageHelper.visualizeCrafting(world, "black", item.posX, item.posY, item.posZ, 80);
         this.burnProgress = 0;
     }
 
