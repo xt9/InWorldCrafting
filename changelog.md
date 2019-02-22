@@ -1,5 +1,8 @@
 # 1.12.2
 
+## 1.1.1
+- Fixed FluidToItem JEI category, outputs where not aligned correctly.
+
 ## 1.1
 - FluidToFluid and FluidToItem recipes now take multiple inputs. (Thanks ExpensiveKoala)
 - Altered FluidToFluid and FluidToItem JEI categories to fit more inputs.

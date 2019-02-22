@@ -45,7 +45,7 @@ public class FluidToItemRecipeCategory implements IRecipeCategory {
         fluidStacks.set(slotindex, ingredients.getInputs(FluidStack.class).get(0));
 
         slotindex++;
-        itemStacks.init(slotindex, true, 159, 1);
+        itemStacks.init(slotindex, true, 158, 1);
         itemStacks.set(slotindex, ingredients.getOutputs(ItemStack.class).get(0));
     }
 

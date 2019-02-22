@@ -130,13 +130,12 @@ public class CraftingItem {
 
                 Map<EntityItem, Integer> used = new HashMap<>();
 
-                // Iterate through the nearby item entities.
                 // Depending on if there are a ton of items lying around, this could get laggy as it's O(n^2)
                 for (EntityItem entityItem : nearbyItems) {
                     Iterator<IIngredient> req = required.iterator();
                     while (req.hasNext()) {
                         IIngredient ingredient = req.next();
-                        if (ingredient.matches(CraftTweakerMC.getIItemStack(entityItem.getItem()))) {
+                        if (ingredient.amount(1).matches(CraftTweakerMC.getIItemStack(entityItem.getItem()).amount(1))) {
                             // If our entity doesn't have enough to fulfill the requirement
                             if (entityItem.getItem().getCount() < ingredient.getAmount()) {
                                 used.put(entityItem, entityItem.getItem().getCount());
@@ -182,13 +181,12 @@ public class CraftingItem {
 
             Map<EntityItem, Integer> used = new HashMap<>();
 
-            // Iterate through the nearby item entities.
             // Depending on if there are a ton of items lying around, this could get laggy as it's O(n^2)
             for (EntityItem entityItem : nearbyItems) {
                 Iterator<IIngredient> req = required.iterator();
                 while (req.hasNext()) {
                     IIngredient ingredient = req.next();
-                    if (ingredient.amount(1).matches(CraftTweakerMC.getIItemStack(entityItem.getItem()))) {
+                    if (ingredient.amount(1).matches(CraftTweakerMC.getIItemStack(entityItem.getItem()).amount(1))) {
                         // If our entity doesn't have enough to fulfill the requirement
                         if (entityItem.getItem().getCount() < ingredient.getAmount()) {
                             used.put(entityItem, entityItem.getItem().getCount());
