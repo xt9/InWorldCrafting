@@ -20,6 +20,7 @@ import xt9.inworldcrafting.common.recipe.FluidToItemRecipe;
 @Mod.EventBusSubscriber
 public class EntityMatcher {
     // TODO, REMOVE DUPLICATES in validInputs
+    // TODO, STOP procrastinating and fix above todo
     public static NonNullList<IIngredient> allValidInputs = NonNullList.create();
 
     @SubscribeEvent

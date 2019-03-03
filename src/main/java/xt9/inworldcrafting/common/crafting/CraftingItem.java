@@ -132,6 +132,11 @@ public class CraftingItem {
 
                 // Depending on if there are a ton of items lying around, this could get laggy as it's O(n^2)
                 for (EntityItem entityItem : nearbyItems) {
+                    if (entityItem.getItem().getCount() == 0) {
+                        entityItem.setDead();
+                        return;
+                    }
+
                     Iterator<IIngredient> req = required.iterator();
                     while (req.hasNext()) {
                         IIngredient ingredient = req.next();
@@ -183,6 +188,11 @@ public class CraftingItem {
 
             // Depending on if there are a ton of items lying around, this could get laggy as it's O(n^2)
             for (EntityItem entityItem : nearbyItems) {
+                if (entityItem.getItem().getCount() == 0) {
+                    entityItem.setDead();
+                    return;
+                }
+
                 Iterator<IIngredient> req = required.iterator();
                 while (req.hasNext()) {
                     IIngredient ingredient = req.next();

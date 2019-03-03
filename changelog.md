@@ -1,5 +1,8 @@
 # 1.12.2
 
+## 1.1.2
+- Fixed Crash when batch Crafting.
+
 ## 1.1.1
 - Fixed FluidToItem JEI category, outputs where not aligned correctly.
 
