@@ -18,22 +18,6 @@ import xt9.inworldcrafting.common.recipe.FluidToFluidRecipe;
 @SuppressWarnings("unused")
 @ZenClass("mods.inworldcrafting.FluidToFluid")
 public class FluidToFluid {
-
-    @ZenMethod
-    public static void transform(ILiquidStack outputFluid, ILiquidStack inputFluid, IItemStack inputItem) {
-        transform(outputFluid, inputFluid, inputItem, true);
-    }
-
-    @ZenMethod
-    public static void transform(ILiquidStack outputFluid, ILiquidStack inputFluid, IIngredient ingredient) {
-        transform(outputFluid, inputFluid, ingredient, true);
-    }
-
-    @ZenMethod
-    public static void transform(ILiquidStack outputFluid, ILiquidStack inputFluid, IIngredient ingredient, boolean consume) {
-        transform(outputFluid, inputFluid, new IIngredient[]{ingredient}, consume);
-    }
-
     @ZenMethod
     public static void transform(ILiquidStack outputFluid, ILiquidStack inputFluid, IIngredient[] ingredients) {
         transform(outputFluid, inputFluid, ingredients, true);

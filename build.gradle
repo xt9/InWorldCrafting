@@ -13,8 +13,8 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 def mcVersion = "1.12.2"
 def modMajor = "1"
-def modMinor = "1"
-def modPatch = "2"
+def modMinor = "2"
+def modPatch = "0"
 
 version = "${mcVersion}-${modMajor}.${modMinor}.${modPatch}"
 group = "src.inworldcrafting" // http://maven.apache.org/guides/mini/guide-naming-conventions.html

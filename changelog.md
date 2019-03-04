@@ -1,5 +1,8 @@
 # 1.12.2
 
+## 1.2.0
+- Removed redundant method overloading for Fluid crafting. All inputitems should now always be wrapped with array brackets. This will BREAK previous scripts that do not surround ingredients with the array brackets.
+
 ## 1.1.2
 - Fixed Crash when batch Crafting.
 

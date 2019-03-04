@@ -17,21 +17,6 @@ import xt9.inworldcrafting.common.recipe.FluidToItemRecipe;
 @ZenClass("mods.inworldcrafting.FluidToItem")
 public class FluidToItem {
     @ZenMethod
-    public static void transform(IItemStack outputItem, ILiquidStack inputFluid, IItemStack inputItem) {
-        transform(outputItem, inputFluid, inputItem, false);
-    }
-
-    @ZenMethod
-    public static void transform(IItemStack outputItem, ILiquidStack inputFluid, IIngredient ingredient) {
-        transform(outputItem, inputFluid, ingredient, false);
-    }
-
-    @ZenMethod
-    public static void transform(IItemStack outputItem, ILiquidStack inputFluid, IIngredient ingredient, boolean consume) {
-        transform(outputItem, inputFluid, new IIngredient[]{ingredient}, consume);
-    }
-
-    @ZenMethod
     public static void transform(IItemStack outputItem, ILiquidStack inputFluid, IIngredient[] ingredients) {
         transform(outputItem, inputFluid, ingredients, false);
     }
