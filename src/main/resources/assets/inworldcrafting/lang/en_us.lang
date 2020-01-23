@@ -1,0 +1,12 @@
+inworldcrafting.jei.burn_item.description=Recipe Time: %s Ticks
+inworldcrafting.jei.burn_item.title=Burning Recipe
+inworldcrafting.jei.explode_blocks.title=Exploding Blocks
+inworldcrafting.jei.explode_blocks.description=Success chance: %s %%
+inworldcrafting.jei.explode_items.title=Exploding Items
+inworldcrafting.jei.explode_items.description=Success chance: %s %%
+inworldcrafting.jei.fluid_to_fluid.title=Fluid to Fluid Transformation
+inworldcrafting.jei.fluid_to_item.title=Fluid to Item Transformation
+inworldcrafting.jei.if_consumes_item=Consumes Item: 
+inworldcrafting.jei.if_consumes_liquid=Consumes Liquid: 
+inworldcrafting.jei.yes=Yes
+inworldcrafting.jei.no=No
