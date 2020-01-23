@@ -1,0 +1,12 @@
+inworldcrafting.jei.burn_item.description=燃烧时间: %s 游戏刻
+inworldcrafting.jei.burn_item.title=燃烧配方
+inworldcrafting.jei.explode_blocks.title=爆破方块
+inworldcrafting.jei.explode_blocks.description=成功率: %s %%
+inworldcrafting.jei.explode_items.title=爆破物品
+inworldcrafting.jei.explode_items.description=成功率: %s %%
+inworldcrafting.jei.fluid_to_fluid.title=流体-流体 转化配方
+inworldcrafting.jei.fluid_to_item.title=流体-物品 转换配方
+inworldcrafting.jei.if_consumes_item=是否消耗物品：
+inworldcrafting.jei.if_consumes_liquid=是否消耗流体：
+inworldcrafting.jei.yes=是
+inworldcrafting.jei.no=否

@@ -8,6 +8,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -42,7 +43,7 @@ public class BurnItemRecipeCategory implements IRecipeCategory {
 
     @Override
     public String getTitle() {
-        return "Burning Items";
+        return I18n.format(InWorldCrafting.MODID+".jei.burn_item.title");
     }
 
     @Override

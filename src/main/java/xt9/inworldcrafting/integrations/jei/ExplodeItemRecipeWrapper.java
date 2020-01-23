@@ -4,7 +4,9 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import xt9.inworldcrafting.InWorldCrafting;
 import xt9.inworldcrafting.common.recipe.ExplodeItemRecipe;
 import xt9.inworldcrafting.common.util.IngredientHelper;
 
@@ -27,6 +29,6 @@ public class ExplodeItemRecipeWrapper implements IRecipeWrapper {
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         FontRenderer renderer = minecraft.fontRenderer;
-        renderer.drawStringWithShadow("Success chance: " + recipe.getSurviveChance() + "%", 1, 30, 0xFFFFFF);
+        renderer.drawStringWithShadow(I18n.format(InWorldCrafting.MODID+".jei.explode_items.description",String.valueOf(recipe.getSurviveChance())), 1, 30, 0xFFFFFF);
     }
 }
